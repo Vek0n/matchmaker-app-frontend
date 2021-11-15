@@ -10,8 +10,7 @@ class Dashboard extends React.Component {
 
     render() {
         return (
-            <div>
-                <h1>Elo</h1>
+            <div style={{ margin: 'auto', width: '70%'}}>
                 <GameRoom />
             </div>
         )
