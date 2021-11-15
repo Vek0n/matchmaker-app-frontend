@@ -23,19 +23,20 @@ async function loginUser(credentials) {
 }
 
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setUserId}) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     var [isLoginSuccesful, setIsLoginSuccesful] = useState();
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const token = await loginUser({
+        const response = await loginUser({
             username,
             password
         });
-        if (token != null) {
-            setToken(token.token);
+        if (response != null) {
+            setToken(response.token);
+            setUserId(response.userId)
         } else {
             alert("Wrong username or password")
         }

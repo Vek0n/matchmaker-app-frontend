@@ -4,13 +4,16 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Dashboard from '../dashboard/Dashboard';
 import Login from '../login/Login';
 import {useToken} from './useToken';
+import {useUserId} from './useUserId';
 
 function App() {
 
   const { token, setToken } = useToken();
+  const {userId, setUserId } = useUserId();
 
     if(!token) {
-        return <Login setToken={setToken} />
+        return <Login setToken = {setToken} 
+                      setUserId = {setUserId}/>
     }
 
     return (
