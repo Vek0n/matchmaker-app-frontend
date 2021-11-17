@@ -6,14 +6,22 @@ import Button from 'react-bootstrap/Button';
 import lol from '../../resources/LoL.png'
 import csgo from '../../resources/CSGO.png'
 import { getToken } from '../app/useToken';
+import { getUserId } from '../app/useUserId';
 import Modal from 'react-bootstrap/Modal';
 import RoomInfo from './RoomInfo'
+import PlayerCreation from '../player/PlayerCreation';
 
 class Room extends React.Component {
 
     state = {
         gameRooms: [],
         showRoomInfo: false,
+        showPlayerCreation: false,
+        gameType: "",
+        level:0,
+        choosenRank: "",
+        buttonText: "Proceed",
+        isPlayerCreated: false
     }
     chooseGameAvatar() {
         if (this.props.gameName == "Counter-Strike: Global Offensive") {
@@ -28,18 +36,44 @@ class Room extends React.Component {
     handleShow = () => this.setState({ showRoomInfo: true });
     handleClose = () => this.setState({ showRoomInfo: false });
 
-    handleJoin(){
+    handleJoin(roomId){
+        // console.log(roomId)
         const token = getToken()
-        axios.get('http://localhost:8080/room/', {
-            headers: {
-                'Authorization': 'Bearer ' + token
-            },
-
-        })
+        const userId = getUserId()
+        if(this.state.isPlayerCreated){ 
+            axios.post('http://localhost:8080/room/' + roomId ,{
+                gameRank: this.state.choosenRank,
+                level: this.state.level
+                },
+                {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                params: {
+                    userId: userId
+                },
+            })
             .then(res => {
                 const gameRooms = res.data;
-                this.setState({ gameRooms });
+                this.setState({ gameRooms })
+                this.setState({ showRoomInfo: false })
             })
+        }else{
+            this.setState({ showPlayerCreation: !this.state.showPlayerCreation });
+        }
+        
+    }
+
+    handleRankChoice = (rank) => {
+        this.setState({choosenRank: rank})
+        this.setState({buttonText: "Join"})
+        this.setState({isPlayerCreated: true})
+    }
+
+
+    handleLevelChoice = (lvl) => {
+        this.setState({level: lvl})
+
     }
 
     render() {
@@ -67,18 +101,24 @@ class Room extends React.Component {
                         <Modal.Body>
                             <div>
                                 <RoomInfo gameRoom={this.props.gameRoom}/>
+                                {this.state.showPlayerCreation && 
+                                <PlayerCreation 
+                                    game = {this.props.gameRoom.game} 
+                                    rankChoiceCallback={this.handleRankChoice} 
+                                    levelChoiceCallback={this.handleLevelChoice}
+                                />}
                             </div>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={this.handleClose}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={this.handleClose}>
-                                Join
+                            {/* <Button variant="primary" onClick={this.handleJoin(this.props.gameRoom.id, "silver 1", 23)}> */}
+                            <Button variant="primary" onClick={() => this.handleJoin(this.props.gameRoom.id)}>
+                                {this.state.buttonText}
                             </Button>
                         </Modal.Footer>
                     </Modal>
-                
                 </>
                 
         )
