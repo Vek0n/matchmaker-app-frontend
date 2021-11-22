@@ -19,11 +19,13 @@ class ChooseGame extends Component {
         isRankChoosen:false,
         isGameTypeChosen:false,
         isGameRankChosen: false,
+        isLevelChosen: false,
         choosenGameName: "",
         choosenRank:"",
         choosenGameType: "",
         choosenGameId: "",
         choosenLevel:0,
+        chosenMaxPlayers:0,
         roomCreationInfo: ""
 
     }
@@ -53,14 +55,19 @@ class ChooseGame extends Component {
 
     handleLevelChoice = (level) =>{
         this.setState({choosenLevel: level})
-        
+        this.setState({isLevelChosen:true})
+    }
+
+    handleMaxPlayersChoice = (maxPlayers) => {
+        this.setState({chosenMaxPlayers: maxPlayers})
+
         let x = JSON.stringify({ 
             gameId: this.state.choosenGameId, 
             gameType: this.state.choosenGameType,
             gameRank: this.state.choosenRank,
-            level: level
+            level: this.state.choosenLevel,
+            maxPlayers: maxPlayers + 1
         });   
-
         this.props.gameChoiceCallback(x)
     }
 
@@ -112,6 +119,24 @@ class ChooseGame extends Component {
                         step={1}
                         value={1}
                         onChange={ num => this.handleLevelChoice(num)}
+                        variant={'primary'}
+                        size="sm"
+                    />
+                    </div>
+                </div>
+            }
+                {this.state.isLevelChosen &&
+                <div>
+                    <h4>How many players are you looking for</h4>
+                    <div style={{width:'7em'}}>
+                    <InputSpinner
+                        type={'int'}
+                        precision={0}
+                        max={4}
+                        min={0}
+                        step={1}
+                        value={1}
+                        onChange={ num => this.handleMaxPlayersChoice(num)}
                         variant={'primary'}
                         size="sm"
                     />
