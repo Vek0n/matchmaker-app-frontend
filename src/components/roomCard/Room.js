@@ -24,9 +24,9 @@ class Room extends React.Component {
         isPlayerCreated: false
     }
     chooseGameAvatar() {
-        if (this.props.gameName == "Counter-Strike: Global Offensive") {
+        if (this.props.gameRoom.game.gameName == "Counter-Strike: Global Offensive") {
             return csgo
-        } else if (this.props.gameName == "League of Legends") {
+        } else if (this.props.gameRoom.game.gameName == "League of Legends") {
             return lol
         } else {
             return lol
@@ -58,10 +58,10 @@ class Room extends React.Component {
                 this.setState({ gameRooms })
                 this.setState({ showRoomInfo: false })
             })
+            setTimeout(() => window.location.reload(), 1000);
         }else{
             this.setState({ showPlayerCreation: !this.state.showPlayerCreation });
         }
-        
     }
 
     handleRankChoice = (rank) => {
@@ -85,15 +85,15 @@ class Room extends React.Component {
                         <Card.Body>
                             <Card.Title>{this.props.gameRoom.game.gameName}</Card.Title>
                             <Card.Text>
+                                <p><h6>{this.props.gameRoom.gameType}</h6></p>
                                 <p>Players: {this.props.gameRoom.playersList.length} / {this.props.gameRoom.maxPlayers}</p>
                             </Card.Text>
-                            {/* <Button variant="primary" onClick={this.props.onClick}>Player list</Button> */}
                             <Button variant="primary" onClick={this.handleShow}>Player list</Button>
-
                         </Card.Body>
                     </Card>
                     </div>
                     
+
                     <Modal show={this.state.showRoomInfo} onHide={this.handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>{this.props.gameRoom.game.gameName}</Modal.Title>
@@ -113,7 +113,6 @@ class Room extends React.Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 Close
                             </Button>
-                            {/* <Button variant="primary" onClick={this.handleJoin(this.props.gameRoom.id, "silver 1", 23)}> */}
                             <Button variant="primary" onClick={() => this.handleJoin(this.props.gameRoom.id)}>
                                 {this.state.buttonText}
                             </Button>
