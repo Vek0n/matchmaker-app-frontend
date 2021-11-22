@@ -56,7 +56,7 @@ class GameRoom extends React.Component {
         axios.post('http://localhost:8080/room/',{
             userId: userId,
             gameId: parsedGame.gameId,
-            maxPlayers: 5,
+            maxPlayers: parsedGame.maxPlayers,
             gameType: parsedGame.gameType,
             player: {
                 gameRank: parsedGame.gameRank,
