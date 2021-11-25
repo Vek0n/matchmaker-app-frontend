@@ -36,7 +36,6 @@ class PlayerCreation extends Component {
             </DropdownButton>
             </div>
             <div style={{ float: 'left', width:'7em'}}>
-                {/* <NumberPicker defaultValue={9000} /> */}
                 <InputSpinner
                     type={'int'}
                     precision={0}

@@ -9,6 +9,7 @@ class RoomInfo extends React.Component {
     render() {
         return (
             <div>
+                <h4>Game type: <b>{this.props.gameRoom.gameType}</b></h4>
                 <h4>Players list:</h4>
                 <Table striped bordered hover responsive>
                     <thead>

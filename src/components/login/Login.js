@@ -23,7 +23,7 @@ async function loginUser(credentials) {
 }
 
 
-export default function Login({ setToken, setUserId}) {
+export default function Login({ setToken, setUserId, setUsername}) {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     var [isLoginSuccesful, setIsLoginSuccesful] = useState();
@@ -35,8 +35,9 @@ export default function Login({ setToken, setUserId}) {
             password
         });
         if (response != null) {
-            setToken(response.token);
+            setToken(response.token)
             setUserId(response.userId)
+            setUsername(username)
         } else {
             alert("Wrong username or password")
         }

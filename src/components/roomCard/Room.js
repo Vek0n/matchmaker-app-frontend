@@ -10,6 +10,7 @@ import { getUserId } from '../app/useUserId';
 import Modal from 'react-bootstrap/Modal';
 import RoomInfo from './RoomInfo'
 import PlayerCreation from '../player/PlayerCreation';
+import {withRouter} from 'react-router-dom'
 
 class Room extends React.Component {
 
@@ -40,6 +41,7 @@ class Room extends React.Component {
         // console.log(roomId)
         const token = getToken()
         const userId = getUserId()
+        // const history = useHistory();
         if(this.state.isPlayerCreated){ 
             axios.post('http://localhost:8080/room/' + roomId ,{
                 gameRank: this.state.choosenRank,
@@ -58,7 +60,7 @@ class Room extends React.Component {
                 this.setState({ gameRooms })
                 this.setState({ showRoomInfo: false })
             })
-            setTimeout(() => window.location.reload(), 1000);
+            this.props.history.push('/myroom')
         }else{
             this.setState({ showPlayerCreation: !this.state.showPlayerCreation });
         }
@@ -113,7 +115,7 @@ class Room extends React.Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={() => this.handleJoin(this.props.gameRoom.id)}>
+                            <Button variant="primary" disabled={this.props.canPlayerCreateNewRoom} onClick={() => this.handleJoin(this.props.gameRoom.id)}>
                                 {this.state.buttonText}
                             </Button>
                         </Modal.Footer>
@@ -124,4 +126,4 @@ class Room extends React.Component {
     }
 }
 
-export default Room
+export default withRouter(Room)

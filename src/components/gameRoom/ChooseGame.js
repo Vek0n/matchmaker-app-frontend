@@ -27,7 +27,6 @@ class ChooseGame extends Component {
         choosenLevel:0,
         chosenMaxPlayers:0,
         roomCreationInfo: ""
-
     }
 
 
@@ -98,7 +97,7 @@ class ChooseGame extends Component {
                 </div>
             }
             {this.state.isRankChoosen &&
-                <div>
+                <div style={{ marginBottom:'2em' }}>
                     <h4>What game type would you like to play?</h4>
                     <DropdownButton onSelect={ (e) => this.handleGameTypeChoice(e)} id="dropdown-basic-button" title={this.state.gameTypeDropdownText}>
                     {this.state.availableGameTypes.map(type =>
@@ -108,7 +107,7 @@ class ChooseGame extends Component {
                 </div>
             }
             {this.state.isGameTypeChosen &&
-                <div>
+                <div style={{ marginBottom:'2em' }}>
                     <h4>What's your level</h4>
                     <div style={{width:'7em'}}>
                     <InputSpinner
@@ -126,7 +125,7 @@ class ChooseGame extends Component {
                 </div>
             }
                 {this.state.isLevelChosen &&
-                <div>
+                <div >
                     <h4>How many players are you looking for</h4>
                     <div style={{width:'7em'}}>
                     <InputSpinner
