@@ -8,7 +8,6 @@ import { useUserId } from './useUserId';
 import { useUsername } from './useUsername';
 import CurrentRoom from '../current_room/CurrentRoom';
 import NavBar from '../navbar/NavBar';
-import { BsDashCircle } from 'react-icons/bs';
 
 function App() {
 

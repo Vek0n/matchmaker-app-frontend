@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ChooseGame from './ChooseGame';
 import { BsPlusLg } from 'react-icons/bs';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,12 +17,12 @@ class GameRoom extends React.Component {
 
     state = {
         gameRooms: [],
-        games:[],
+        games: [],
         choosenGame: "",
         showRoomInfo: false,
-        currentGameName:"",
-        currentPlayersCount:0,
-        currentMaxPlayers:0,
+        currentGameName: "",
+        currentPlayersCount: 0,
+        currentMaxPlayers: 0,
         showRoomCreationModal: false,
         roomCreationInfo: "",
         isCreationDataFilled: false,
@@ -40,7 +40,7 @@ class GameRoom extends React.Component {
     }
 
 
-    getGameRooms = () =>{
+    getGameRooms = () => {
         const token = getToken()
         const userId = getUserId()
         axios.get('http://localhost:8080/room/without/' + userId, {
@@ -51,12 +51,12 @@ class GameRoom extends React.Component {
             .then(res => {
                 const gameRooms = res.data;
                 this.setState({ gameRooms });
-        })
+            })
         this.intervalID = setTimeout(this.getGameRooms.bind(this), 1000);
         this.getAllRoomsWithPlayer()
     }
 
-    getAvailableGames(){
+    getAvailableGames() {
         const token = getToken()
         axios.get('http://localhost:8080/games', {
             headers: {
@@ -69,28 +69,28 @@ class GameRoom extends React.Component {
             })
     }
 
-    getAllRoomsWithPlayer(){
+    getAllRoomsWithPlayer() {
         const token = getToken()
         const userId = getUserId()
-        axios.get('http://localhost:8080/room/with/' + userId, {
+        axios.get('http://localhost:8080/room/open/' + userId, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
-        .then(res => {
-            const gameRooms = res.data
-            if(gameRooms.length == 0 ){
-                this.setState({disableCreateNewRoomButton: false})
-            }
-        })
+            .then(res => {
+                const gameRooms = res.data
+                if (gameRooms.length == 0) {
+                    this.setState({ disableCreateNewRoomButton: false })
+                }
+            })
     }
 
 
-    createGameRoom(game){
+    createGameRoom(game) {
         const token = getToken()
         const userId = getUserId()
         let parsedGame = JSON.parse(game);
-        axios.post('http://localhost:8080/room/',{
+        axios.post('http://localhost:8080/room/', {
             userId: userId,
             gameId: parsedGame.gameId,
             maxPlayers: parsedGame.maxPlayers,
@@ -99,31 +99,29 @@ class GameRoom extends React.Component {
                 gameRank: parsedGame.gameRank,
                 level: parsedGame.level
             }
-            },{
+        }, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
-
-
     }
 
 
     handleShow = () => this.setState({ showRoomInfo: true });
     handleClose = () => this.setState({ showRoomInfo: false });
-    handleRoomCreationClose = () => this.setState({showRoomCreationModal: false})
+    handleRoomCreationClose = () => this.setState({ showRoomCreationModal: false })
     handleRoomCreationShow = () => this.setState({ showRoomCreationModal: true })
 
     getRoomCreationData = (game) => {
-        this.setState({roomCreationInfo: game})
-        this.setState({isCreationDataFilled: true})
+        this.setState({ roomCreationInfo: game })
+        this.setState({ isCreationDataFilled: true })
     }
 
     handleRoomCreation = () => {
         this.createGameRoom(
             this.state.roomCreationInfo
         )
-        this.setState({showRoomCreationModal: false})
+        this.setState({ showRoomCreationModal: false })
         this.props.history.push('/myroom')
     }
 
@@ -132,8 +130,8 @@ class GameRoom extends React.Component {
         return (
             <>
                 <div style={{ float: 'left', marginLeft: '1em', marginRight: '1em' }} >
-                    <Button style={{ width:'200px', height:'360px'}} disabled={this.state.disableCreateNewRoomButton} variant="outline-secondary" onClick={() => this.handleRoomCreationShow()}>
-                    <BsPlusLg />
+                    <Button style={{ width: '200px', height: '360px' }} disabled={this.state.disableCreateNewRoomButton} variant="outline-secondary" onClick={() => this.handleRoomCreationShow()}>
+                        <BsPlusLg />
                     </Button>
                 </div>
                 <div>
@@ -149,26 +147,26 @@ class GameRoom extends React.Component {
 
 
                 <Modal show={this.state.showRoomCreationModal} onHide={this.handleRoomCreationClose}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Create room</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div>
-                                <ChooseGame games={this.state.games} gameChoiceCallback={this.getRoomCreationData}/>
-                            </div>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={this.handleRoomCreationClose}>
-                                Close
-                            </Button>
-                            <Button variant="primary" onClick={() => this.handleRoomCreation()} disabled={!this.state.isCreationDataFilled}>
-                                Create
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Create room</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div>
+                            <ChooseGame games={this.state.games} gameChoiceCallback={this.getRoomCreationData} />
+                        </div>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleRoomCreationClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" onClick={() => this.handleRoomCreation()} disabled={!this.state.isCreationDataFilled}>
+                            Create
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
 
-                    <ToastContainer
+                <ToastContainer
                     position="bottom-center"
                     autoClose={5000}
                     hideProgressBar={false}
@@ -178,7 +176,7 @@ class GameRoom extends React.Component {
                     pauseOnFocusLoss
                     draggable
                     pauseOnHover
-                /> 
+                />
             </>
         )
     }
