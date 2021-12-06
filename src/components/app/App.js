@@ -8,6 +8,7 @@ import { useUserId } from './useUserId';
 import { useUsername } from './useUsername';
 import CurrentRoom from '../current_room/CurrentRoom';
 import NavBar from '../navbar/NavBar';
+import HistoryRooms from '../history_rooms/HistoryRooms';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
                     />
                     <Route exact path="/main" component={Dashboard} />
                     <Route exact path="/myroom" component={CurrentRoom} />
+                    <Route exact path="/history" component={HistoryRooms}/>
                 </Switch>
             </BrowserRouter>
         </div>

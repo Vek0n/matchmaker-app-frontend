@@ -57,6 +57,12 @@ class CurrentRoom extends React.Component {
         clearTimeout(this.intervalID);
     }
 
+    getCreationDate(){
+        var date = new Date(this.state.gameRooms[0].creationDate)
+        var d = date.toLocaleDateString()
+        var t = date.toLocaleTimeString()
+        return d + ", " + t
+    }
 
     render() {
         if (this.state.gameRooms.length > 0) {
@@ -65,6 +71,7 @@ class CurrentRoom extends React.Component {
                     <div style={{ margin: 'auto', width: '50%' }}>
                         <div style={{ textAlign: 'center', marginBottom: '3em' }}>
                             <h1>Waiting for other players...</h1>
+                            <p>Creation date: {this.getCreationDate()}</p>
                             <Spinner animation="border" role="status" size="lg">
                                 <span className="visually-hidden">Loading...</span>
                             </Spinner>
@@ -113,6 +120,7 @@ class CurrentRoom extends React.Component {
                     <div style={{ margin: 'auto', width: '50%' }}>
                         <div style={{ textAlign: 'center', marginBottom: '3em' }}>
                             <h1>All players found!</h1>
+                            <p>Creation date: {this.getCreationDate()}</p>
                         </div>
                         <h3>{this.state.gameRooms[0].game.gameName} </h3>
                         <h4>{this.state.gameRooms[0].gameType}</h4>

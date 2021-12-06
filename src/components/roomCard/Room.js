@@ -16,8 +16,9 @@ class Room extends React.Component {
 
     state = {
         gameRooms: [],
-        showRoomInfo: false,
+        showPlayerCreationModal: false,
         showPlayerCreation: false,
+        showClosedRoomInfoModal: false,
         gameType: "",
         level:0,
         choosenRank: "",
@@ -34,8 +35,18 @@ class Room extends React.Component {
         }
     }
     
-    handleShow = () => this.setState({ showRoomInfo: true });
-    handleClose = () => this.setState({ showRoomInfo: false });
+    handleShow = () => {
+        if(this.props.gameRoom.roomStatus == "OPEN"){
+            this.setState({ showPlayerCreationModal: true });
+        }else if(this.props.gameRoom.roomStatus == "CLOSED"){
+            this.setState({ showClosedRoomInfoModal: true });
+        }
+    }
+
+    handleClose = () => {
+        this.setState({ showPlayerCreationModal: false });
+        this.setState({ showClosedRoomInfoModal: false });
+    }   
 
     handleJoin(roomId){
         // console.log(roomId)
@@ -58,7 +69,7 @@ class Room extends React.Component {
             .then(res => {
                 const gameRooms = res.data;
                 this.setState({ gameRooms })
-                this.setState({ showRoomInfo: false })
+                this.setState({ showPlayerCreationModal: false })
             })
             this.props.history.push('/myroom')
         }else{
@@ -75,7 +86,13 @@ class Room extends React.Component {
 
     handleLevelChoice = (lvl) => {
         this.setState({level: lvl})
+    }
 
+    getCreationDate(){
+        var date = new Date(this.props.gameRoom.creationDate)
+        var d = date.toLocaleDateString()
+        var t = date.toLocaleTimeString()
+        return d + ", " + t
     }
 
     render() {
@@ -96,13 +113,15 @@ class Room extends React.Component {
                     </div>
                     
 
-                    <Modal show={this.state.showRoomInfo} onHide={this.handleClose}>
+                    <Modal show={this.state.showPlayerCreationModal} onHide={this.handleClose}>
                         <Modal.Header closeButton>
                             <Modal.Title>{this.props.gameRoom.game.gameName}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <div>
+                            
                                 <RoomInfo gameRoom={this.props.gameRoom}/>
+                                <p>Created: {this.getCreationDate()}</p>
                                 {this.state.showPlayerCreation && 
                                 <PlayerCreation 
                                     game = {this.props.gameRoom.game} 
@@ -110,6 +129,7 @@ class Room extends React.Component {
                                     levelChoiceCallback={this.handleLevelChoice}
                                 />}
                             </div>
+                            
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={this.handleClose}>
@@ -120,6 +140,25 @@ class Room extends React.Component {
                             </Button>
                         </Modal.Footer>
                     </Modal>
+
+
+                    <Modal show={this.state.showClosedRoomInfoModal} onHide={this.handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>{this.props.gameRoom.game.gameName}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div>
+                                <RoomInfo gameRoom={this.props.gameRoom}/>
+                                <p>Created: {this.getCreationDate()}</p>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={this.handleClose}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
                 </>
                 
         )
