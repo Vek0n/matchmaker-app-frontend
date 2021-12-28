@@ -8,6 +8,8 @@ import Spinner from 'react-bootstrap/Spinner';
 import { withRouter } from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 import { ToastContainer, toast } from 'react-toastify';
+import Modal from 'react-bootstrap/Modal';
+import PlayerSocial from '../player/PlayerSocial';
 
 class CurrentRoom extends React.Component {
     intervalID;
@@ -15,7 +17,8 @@ class CurrentRoom extends React.Component {
     state = {
         gameRooms: [],
         time: null,
-        isRoomFull: false
+        isRoomFull: false,
+        showPlayersInfo: false
     }
 
 
@@ -48,6 +51,14 @@ class CurrentRoom extends React.Component {
         this.props.history.push('/main')
     }
 
+    handleClose = () => {
+        this.setState({ viewPlayersInfo: false })
+    }  
+
+    viewPlayersInfo = () => {
+        this.setState({ viewPlayersInfo: true })
+    }
+
     componentDidMount() {
         this.getData()
     }
@@ -57,7 +68,7 @@ class CurrentRoom extends React.Component {
         clearTimeout(this.intervalID);
     }
 
-    getCreationDate(){
+    getCreationDate() {
         var date = new Date(this.state.gameRooms[0].creationDate)
         var d = date.toLocaleDateString()
         var t = date.toLocaleTimeString()
@@ -83,13 +94,13 @@ class CurrentRoom extends React.Component {
                             <Table striped bordered hover responsive>
                                 <thead>
                                     <tr>
-                                        <th>Username</th>
-                                        <th>Rank</th>
-                                        <th>Level</th>
+                                        <th style={{textAlign: 'center', verticalAlign: 'middle'}}>Username</th>
+                                        <th style={{textAlign: 'center', verticalAlign: 'middle'}}>Rank</th>
+                                        <th style={{textAlign: 'center', verticalAlign: 'middle'}}>Level</th>
                                     </tr>
                                 </thead>
                                 {this.state.gameRooms[0].playersList.map(player => (
-                                    <tr>
+                                    <tr style={{textAlign: 'center', verticalAlign: 'middle'}}>
                                         <PlayerInfo player={player} />
                                     </tr>
                                 ))}
@@ -116,34 +127,52 @@ class CurrentRoom extends React.Component {
                 )
             } else if (this.state.gameRooms[0].roomStatus == "CLOSED") {
                 return (
-
-                    <div style={{ margin: 'auto', width: '50%' }}>
-                        <div style={{ textAlign: 'center', marginBottom: '3em' }}>
-                            <h1>All players found!</h1>
-                            <p>Creation date: {this.getCreationDate()}</p>
+                    <>
+                        <div style={{ margin: 'auto', width: '50%' }}>
+                            <div style={{ textAlign: 'center', marginBottom: '3em' }}>
+                                <h1>All players found!</h1>
+                                <p>Creation date: {this.getCreationDate()}</p>
+                            </div>
+                            <h3>{this.state.gameRooms[0].game.gameName} </h3>
+                            <h4>{this.state.gameRooms[0].gameType}</h4>
+                            <div>
+                                <Table striped bordered hover responsive>
+                                    <thead>
+                                        <tr>
+                                            <th>Username</th>
+                                            <th>Rank</th>
+                                            <th>Level</th>
+                                        </tr>
+                                    </thead>
+                                    {this.state.gameRooms[0].playersList.map(player => (
+                                        <tr>
+                                            <PlayerInfo player={player} />
+                                        </tr>
+                                    ))}
+                                </Table>
+                            </div>
+                            <div>
+                                <Button variant="primary" onClick={this.viewPlayersInfo}>View players info</Button>
+                            </div>
                         </div>
-                        <h3>{this.state.gameRooms[0].game.gameName} </h3>
-                        <h4>{this.state.gameRooms[0].gameType}</h4>
                         <div>
-                            <Table striped bordered hover responsive>
-                                <thead>
-                                    <tr>
-                                        <th>Username</th>
-                                        <th>Rank</th>
-                                        <th>Level</th>
-                                    </tr>
-                                </thead>
-                                {this.state.gameRooms[0].playersList.map(player => (
-                                    <tr>
-                                        <PlayerInfo player={player} />
-                                    </tr>
-                                ))}
-                            </Table>
+                            <Modal show={this.state.viewPlayersInfo} onHide={this.handleClose}>
+                                <Modal.Header closeButton>
+                                    <Modal.Title>User's social:</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <div>
+                                        <PlayerSocial playersList={this.state.gameRooms[0].playersList}/>
+                                    </div>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={this.handleClose}>
+                                        Close
+                                    </Button>
+                                </Modal.Footer>
+                            </Modal>
                         </div>
-                        <div>
-                            <Button variant="primary" onClick={this.leaveRoom}>View players info</Button>
-                        </div>
-                    </div>
+                    </>
                 )
             }
         }

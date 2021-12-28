@@ -9,6 +9,7 @@ import { useUsername } from './useUsername';
 import CurrentRoom from '../current_room/CurrentRoom';
 import NavBar from '../navbar/NavBar';
 import HistoryRooms from '../history_rooms/HistoryRooms';
+import AdminDashboard from '../admin/AdminDashboard';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
                     <Route exact path="/main" component={Dashboard} />
                     <Route exact path="/myroom" component={CurrentRoom} />
                     <Route exact path="/history" component={HistoryRooms}/>
+                    <Route exact path="/admin-dashboard" component={AdminDashboard}/>
                 </Switch>
             </BrowserRouter>
         </div>

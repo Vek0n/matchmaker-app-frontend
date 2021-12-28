@@ -8,13 +8,13 @@ class PlayerInfo extends React.Component {
     render() {
         return (
             <>
-                <td>
+                <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
                     {this.props.player.user.username}
                 </td>
-                <td>
+                <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
                     {this.props.player.gameRank}
                 </td>
-                <td>
+                <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
                     {this.props.player.level}
                 </td>
             </>

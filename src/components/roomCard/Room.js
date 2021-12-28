@@ -11,6 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import RoomInfo from './RoomInfo'
 import PlayerCreation from '../player/PlayerCreation';
 import {withRouter} from 'react-router-dom'
+import PlayerSocial from '../player/PlayerSocial';
 
 class Room extends React.Component {
 
@@ -119,7 +120,6 @@ class Room extends React.Component {
                         </Modal.Header>
                         <Modal.Body>
                             <div>
-                            
                                 <RoomInfo gameRoom={this.props.gameRoom}/>
                                 <p>Created: {this.getCreationDate()}</p>
                                 {this.state.showPlayerCreation && 
@@ -129,7 +129,6 @@ class Room extends React.Component {
                                     levelChoiceCallback={this.handleLevelChoice}
                                 />}
                             </div>
-                            
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={this.handleClose}>
@@ -149,6 +148,8 @@ class Room extends React.Component {
                         <Modal.Body>
                             <div>
                                 <RoomInfo gameRoom={this.props.gameRoom}/>
+                                <h4>Player's social:</h4>
+                                <PlayerSocial playersList={this.props.gameRoom.playersList}/>
                                 <p>Created: {this.getCreationDate()}</p>
                             </div>
                         </Modal.Body>
