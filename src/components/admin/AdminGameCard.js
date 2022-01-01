@@ -12,13 +12,15 @@ import Table from 'react-bootstrap/Table';
 export default class AdminGameCard extends Component {
     state = {
         showRoomInfoModal: false,
-        showConfirmDelete: false
+        showConfirmDelete: false,
+        rankList: [],
+        gameTypesList: []
     }
 
 
-    deleteRoom(roomId) {
+    deleteRoom(gameId) {
         const token = getToken()
-        axios.delete('http://localhost:8080/room/' + roomId, {
+        axios.delete('http://localhost:8080/games/' + gameId, {
             headers: {
                 'Authorization': 'Bearer ' + token
             }
@@ -30,7 +32,7 @@ export default class AdminGameCard extends Component {
     }
 
     handleDelete = () => {
-        this.deleteRoom(this.props.room.id)
+        this.deleteRoom(this.props.game.id)
         this.setState({ showConfirmDelete: false });
     }
 
@@ -47,6 +49,15 @@ export default class AdminGameCard extends Component {
         this.setState({ showConfirmDelete: false });
     }
 
+    componentDidMount() {
+        this.setState({ rankList: 
+            this.props.game.availableRanks }
+        );
+        this.setState({ gameTypesList: 
+            this.props.game.gameTypes }
+        );
+    }
+
     render() {
         return (
             <div style={{ marginBottom: '1em' }}>
@@ -55,26 +66,12 @@ export default class AdminGameCard extends Component {
                     <Card.Body>
                         <Card.Title>{this.props.game.gameName}</Card.Title>
                         <Card.Text>
-
                         </Card.Text>
                         <Button variant="primary" onClick={this.handleShow} style={{ marginRight: "1em" }}>Game details</Button>
-                        <Button variant="danger" onClick={this.handleShowDeleteConfirmation}>Delete game</Button>
+                        {/* <Button variant="danger" onClick={this.handleShowDeleteConfirmation}>Delete game</Button> */}
                     </Card.Body>
                 </Card>
-
-                {/* <Modal show={this.state.showConfirmDelete} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Delete room?</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Footer>
-                    <Button variant="danger" onClick={this.handleDelete}>Delete</Button>
-                        <Button variant="secondary" onClick={this.handleClose}>
-                            Close
-                        </Button>
-
-                    </Modal.Footer>
-                </Modal>
-                */}
+               
                 <Modal show={this.state.showRoomInfoModal} onHide={this.handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>{this.props.game.gameName}</Modal.Title>
@@ -88,7 +85,7 @@ export default class AdminGameCard extends Component {
                                         <th>Available ranks</th>
                                     </tr>
                                 </thead>
-                                {this.props.game.availableRanks.map(rank => (
+                                {this.state.rankList.map(rank => (
                                     <tr>
                                         {rank}
                                     </tr>
@@ -101,7 +98,7 @@ export default class AdminGameCard extends Component {
                                         <th>Available game types</th>
                                     </tr>
                                 </thead>
-                                {this.props.game.gameTypes.map(gameType => (
+                                {this.state.gameTypesList.map(gameType => (
                                     <tr>
                                         {gameType}
                                     </tr>

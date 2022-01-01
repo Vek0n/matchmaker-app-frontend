@@ -26,15 +26,6 @@ class Room extends React.Component {
         buttonText: "Proceed",
         isPlayerCreated: false
     }
-    chooseGameAvatar() {
-        if (this.props.gameRoom.game.gameName == "Counter-Strike: Global Offensive") {
-            return csgo
-        } else if (this.props.gameRoom.game.gameName == "League of Legends") {
-            return lol
-        } else {
-            return lol
-        }
-    }
     
     handleShow = () => {
         if(this.props.gameRoom.roomStatus == "OPEN"){
@@ -101,7 +92,7 @@ class Room extends React.Component {
             <>
                 <div>
                     <Card style={{ width: '15rem' }}>
-                        <Card.Img variant="top" src={this.chooseGameAvatar()} />
+                        <Card.Img variant="top" src={this.props.gameRoom.game.gameLogoImageLink} />
                         <Card.Body>
                             <Card.Title>{this.props.gameRoom.game.gameName}</Card.Title>
                             <Card.Text>
