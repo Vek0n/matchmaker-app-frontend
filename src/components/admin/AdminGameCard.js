@@ -25,10 +25,6 @@ export default class AdminGameCard extends Component {
                 'Authorization': 'Bearer ' + token
             }
         })
-        // .then(res => {
-        //     const rooms = res.data;
-        //     this.setState({ openRooms: rooms });
-        // })
     }
 
     handleDelete = () => {
@@ -68,7 +64,6 @@ export default class AdminGameCard extends Component {
                         <Card.Text>
                         </Card.Text>
                         <Button variant="primary" onClick={this.handleShow} style={{ marginRight: "1em" }}>Game details</Button>
-                        {/* <Button variant="danger" onClick={this.handleShowDeleteConfirmation}>Delete game</Button> */}
                     </Card.Body>
                 </Card>
                

@@ -3,8 +3,6 @@ import axios from 'axios';
 import Card from 'react-bootstrap/Card'
 import CardGroup from 'react-bootstrap/CardGroup'
 import Button from 'react-bootstrap/Button';
-import lol from '../../resources/LoL.png'
-import csgo from '../../resources/CSGO.png'
 import { getToken } from '../app/useToken';
 import { getUserId } from '../app/useUserId';
 import Modal from 'react-bootstrap/Modal';

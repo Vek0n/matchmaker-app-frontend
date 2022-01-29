@@ -30,7 +30,7 @@ class PlayerSocial extends React.Component {
                                 {player.user.username}
                             </td>
                             <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                                {player.user.userSocial.steamUsername}
+                                <a href={"https://steamcommunity.com/id/" + player.user.userSocial.steamUsername}>{player.user.userSocial.steamUsername}</a>
                             </td>
                             {/* <td>
                                 {player.user.userSocial.discordUsername}
@@ -39,10 +39,11 @@ class PlayerSocial extends React.Component {
                                 {player.user.userSocial.epicGamesUsername}
                             </td>
                             <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                                {player.user.userSocial.originUsername}
+                            <a href={"https://www.origin.com/pol/pl-pl/profile/user/" + player.user.userSocial.originUsername}>{player.user.userSocial.originUsername}</a>
+                                
                             </td>
                             <td style={{textAlign: 'center', verticalAlign: 'middle'}}>
-                                {player.user.userSocial.uplayUsername}
+                            <a href={"https://ubisoftconnect.com/pl-PL/profile/" + player.user.userSocial.uplayUsername}>{player.user.userSocial.uplayUsername}</a>
                             </td>
                         </tr>
                     )}
